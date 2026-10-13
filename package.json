@@ -1,0 +1,55 @@
+{
+  "name": "pi-context-coach",
+  "version": "0.0.0",
+  "description": "Cost-aware context management, task-boundary compaction nudges, and smarter agent workflows for Pi.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Akshay Katyal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrDHat/pi-context-coach.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrDHat/pi-context-coach/issues"
+  },
+  "homepage": "https://github.com/MrDHat/pi-context-coach#readme",
+  "keywords": [
+    "pi-package",
+    "context-management",
+    "compaction"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run typecheck && npm test"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=1.2.0 <2.0.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@types/node": "^22.20.5",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
