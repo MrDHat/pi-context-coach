@@ -3,8 +3,8 @@
 A Pi extension for cost-aware context management, task-boundary compaction nudges,
 and smarter agent workflows.
 
-**Status: in development.** Pricing configuration audits are implemented. Nudges,
-compaction actions, and polling coaching are coming in subsequent stacked PRs.
+**Status: in development.** Pricing audits and context nudges are implemented.
+Task-boundary actions and polling coaching are coming in subsequent stacked PRs.
 Nothing is published to npm yet.
 
 ## Try the scaffold
@@ -33,7 +33,25 @@ pi install git:github.com/MrDHat/pi-context-coach
 Run `/reload` in an existing Pi session after installation. Extensions execute
 with your operating-system permissions; review source before installing.
 
-## Planned coaching
+## Context nudges
+
+Reminders appear after the agent has fully settled, not during tools or retries.
+Defaults are 120K/180K current context tokens, reduced to 60%/90% of the effective
+budget for smaller models or earlier compaction limits. They do not count
+cumulative billed usage. Unknown usage produces no warning.
+
+- `/context-coach` or `/context-coach status`: inspect context and thresholds.
+- `/context-coach snooze`: postpone reminders until another 20K tokens accrue.
+- `/context-coach dismiss`: disable nudges for this model in this session.
+- `/context-coach resume`: re-enable reminders.
+- `/context-coach thresholds 120000 180000`: customize session/model thresholds.
+
+Nudge state is saved in non-model-context session entries and restored from the
+active branch. Successful compaction resets warning levels; failed/cancelled
+compaction does not. UI reminders never request a model turn. No automatic
+compaction or billing enforcement is added.
+
+## Coaching scope
 
 - **Pricing-aware setup:** audit per-model compaction thresholds against known
   long-context pricing boundaries; preview changes and apply only with approval.
