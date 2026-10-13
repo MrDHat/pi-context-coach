@@ -4,7 +4,7 @@ A Pi extension for cost-aware context management, task-boundary compaction nudge
 and smarter agent workflows.
 
 **Status: in development.** Pricing audits and task-boundary compaction actions
-are implemented. Polling coaching is coming in the next PR.
+and narrow GitHub polling coaching are implemented.
 Nothing is published to npm yet.
 
 ## Try the scaffold
@@ -78,6 +78,31 @@ Use `/context-coach compact` to request a focused summary. It waits until idle,
 asks for confirmation, and checks session/model/history identity and queued work
 again before starting. Compaction is lossy and makes a model request. Important
 decisions should also live in an inspectable handoff or issue.
+
+## Agent polling coaching
+
+The coach recognizes these explicit machine-readable checks:
+
+```bash
+gh run view <numeric-id> --json status,conclusion
+gh pr checks <numeric-id> --json name,state
+```
+
+After three unchanged pending snapshots of the same target within ten minutes,
+it sends one short agent-facing instruction after tool results are finalized,
+without requesting another model turn. The instruction suggests a supported
+watcher or bounded polling script with timeout and cancellation. It does not
+rewrite commands, block tools, or trigger compaction. PR checks returning pending
+exit code 8 are supported when structured output is available.
+
+Normalized states are compared by hash; raw logs are not retained. Completion,
+failure, progress, malformed JSON, and oversized results reset or bypass
+coaching. Watcher-internal polling and unknown shell scripts are not inspected.
+
+Use `/context-coach polling off` or `polling on` to control agent hints for the
+active branch/session. This is separate from `dismiss`, which controls user
+task-boundary suggestions. User suggestions stay outside model context; polling
+guidance must enter model context to influence the agent.
 
 ## Coaching scope
 
