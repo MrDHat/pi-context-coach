@@ -7,7 +7,7 @@ and smarter agent workflows.
 and narrow GitHub polling coaching are implemented.
 Nothing is published to npm yet.
 
-## Try the scaffold
+## Installation
 
 Requires Node.js **22.19.0 or newer** and Pi **1.2.x**. The declared peer range is
 Pi 1.x from 1.2.0 onward; CI currently typechecks against 1.2.0.
@@ -140,7 +140,7 @@ guidance must enter model context to influence the agent.
 ## Coaching scope
 
 - **Pricing-aware setup:** audit per-model compaction thresholds against known
-  long-context pricing boundaries; preview changes and apply only with approval.
+  long-context pricing boundaries; show read-only settings previews for manual application.
 - **Task boundaries:** suggest compaction after meaningful checkpoints, or a fresh
   session for unrelated work. Tool sequences are evidence, not proof of completion.
 - **Agent workflow:** recognize repeated unchanged polling and suggest a bounded
@@ -157,12 +157,49 @@ npm ci --ignore-scripts
 npm run check
 npm run test:watch
 npm run format
-npm pack --dry-run --ignore-scripts
+npm run pack:check
+npm run smoke
 ```
 
 Pi loads the TypeScript entry point directly; no compilation or bundled host
 runtime is needed. Host APIs are peer dependencies and development dependencies,
 not runtime dependencies.
+
+## Publishing
+
+The initial candidate version is **0.1.0**. Nothing has been published by this
+stack. Once the release PR is reviewed and merged, the package will be installable
+from npm after an explicit publication:
+
+```bash
+pi install npm:pi-context-coach
+```
+
+Publishing is maintainer-controlled, not automatic on merge. The manual
+`Publish npm package` workflow runs only on `main`, uses the GitHub `npm`
+environment, reruns checks, loads the actual tarball in Pi without a model
+request, and publishes that validated tarball with provenance.
+
+Before enabling publication:
+
+1. Review and merge the feature stack bottom-up. Retarget/rebase child PRs after
+   merging parents so each review stays focused.
+2. Configure required reviewers for the GitHub `npm` environment if your plan
+   supports them, and restrict deployment branches to `main`.
+3. Bootstrap the npm package if necessary. If npm does not allow trusted publisher
+   configuration before the first release, an authenticated maintainer must
+   explicitly run `npm publish --access public` from a clean, reviewed `main`
+   checkout. The `prepublishOnly` hook runs local checks first. Never commit tokens.
+4. Configure npm trusted publishing for owner `MrDHat`, repository
+   `pi-context-coach`, workflow `publish.yml`, and environment `npm`. The workflow
+   needs this external npm configuration; no token fallback is embedded.
+5. For later releases, update manifest and lockfile together with
+   `npm version <version> --no-git-tag-version`, summarize changes in the release
+   PR, and merge it before manually dispatching the workflow on `main`.
+
+The workflow cannot publish the same version twice. Releases remain 0.x while
+interfaces and heuristics evolve; record release notes in GitHub rather than a
+separate documentation file. CI covers Node 22.19 and 24 against Pi 1.2.0.
 
 ## Inspiration
 
