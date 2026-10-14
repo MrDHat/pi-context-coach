@@ -1,6 +1,6 @@
 {
   "name": "pi-context-coach",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Cost-aware context management, task-boundary compaction nudges, and smarter agent workflows for Pi.",
   "type": "module",
   "license": "MIT",
@@ -37,7 +37,10 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run typecheck && npm test"
+    "check": "npm run format:check && npm run typecheck && npm test",
+    "pack:check": "node scripts/check-package.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "prepublishOnly": "npm run check && npm run pack:check && npm run smoke"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": ">=1.2.0 <2.0.0",

@@ -25,12 +25,15 @@ export function harness() {
   contextCoach(pi);
   const ctx = {
     hasUI: true,
+    cwd: "/context-coach-test-project-not-present",
+    isProjectTrusted: () => false,
     model: model(),
     ui: {
       notify: vi.fn(),
       setStatus: vi.fn(),
       select: vi.fn(),
       confirm: vi.fn(),
+      input: vi.fn(),
     },
     getContextUsage: () => ({
       tokens: 1000,
