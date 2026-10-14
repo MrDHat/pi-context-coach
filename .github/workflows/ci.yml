@@ -24,5 +24,13 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run check
-      - name: Verify package contents
-        run: npm pack --dry-run --ignore-scripts
+      - run: npm run pack:check
+      - run: npm run smoke
+      - name: Load packed extension in Pi
+        shell: bash
+        run: |
+          package_dir=$(mktemp -d)
+          trap 'rm -rf "$package_dir"' EXIT
+          npm pack --ignore-scripts --pack-destination "$package_dir"
+          tar -xzf "$package_dir"/*.tgz -C "$package_dir"
+          node scripts/smoke.mjs "$package_dir/package/src/index.ts"

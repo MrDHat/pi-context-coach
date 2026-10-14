@@ -1,0 +1,38 @@
+name: Publish npm package
+
+# Explicit maintainer action only; never runs on PRs, pushes, or tags.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11.19.0 --ignore-scripts
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run pack:check
+      - run: npm run smoke
+      - name: Validate the actual release tarball
+        shell: bash
+        run: |
+          mkdir release-package
+          npm pack --ignore-scripts --pack-destination release-package
+          tar -xzf release-package/*.tgz -C release-package
+          node scripts/smoke.mjs "$PWD/release-package/package/src/index.ts"
+      - name: Publish validated tarball with OIDC and provenance
+        run: npm publish release-package/*.tgz --ignore-scripts --provenance --access public
