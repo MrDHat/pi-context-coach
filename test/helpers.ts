@@ -8,10 +8,12 @@ import contextCoach from "../src/index.js";
 export function harness() {
   const handlers = new Map<string, (event: any, ctx: any) => any>();
   const registerCommand = vi.fn<ExtensionAPI["registerCommand"]>();
+  const registerTool = vi.fn<ExtensionAPI["registerTool"]>();
   const appendEntry = vi.fn();
   const sendMessage = vi.fn();
   const pi = {
     registerCommand,
+    registerTool,
     on: (event: string, handler: (event: any, ctx: any) => any) => {
       handlers.set(event, handler);
       return () => handlers.delete(event);
@@ -54,6 +56,7 @@ export function harness() {
     appendEntry,
     sendMessage,
     registerCommand,
+    registerTool,
   };
 }
 
