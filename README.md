@@ -33,6 +33,39 @@ pi install git:github.com/MrDHat/pi-context-coach
 Run `/reload` in an existing Pi session after installation. Extensions execute
 with your operating-system permissions; review source before installing.
 
+## Optional onboarding and your workflow
+
+Run `/context-coach onboard` for a guided walkthrough. It explains the pricing
+audit, phase handoffs, and agent polling coaching, then walks through all five
+milestones. For each, keep the opinionated default or add your own completion
+criteria, including skills, checks, tools, or required artifacts. For example:
+
+> Implementation complete: use our TDD skill, pass tests and typecheck, and record
+> remaining risks before review.
+
+The final screen previews all criteria and the destination before saving. Escape
+or decline at any step to cancel without writing. Onboarding never launches a
+model request, changes Pi settings, runs referenced skills, or compacts history.
+It is opt-in; the defaults work without it.
+
+Choose personal (`<agent-dir>/context-coach.json`) or project
+(`.pi/context-coach.json`) scope. Project scope is offered and loaded only for
+trusted projects. Project criteria override personal criteria per phase; an
+explicit empty criterion selects the opinionated default for that phase.
+Project files can be committed to share a team's workflow. Keep secrets out:
+criteria are sent to the model provider as guidance.
+
+Use `/context-coach workflow` to inspect the effective criteria and `onboard` to
+revise them. Guidance is loaded on the next run into a stable prompt section,
+not appended as repeated chat messages. Invalid files are reported and ignored.
+Saving is atomic and rejects concurrent edits.
+
+Custom criteria supplement—not replace—the milestones. The agent must explain
+observed evidence and explicitly attest that applicable criteria are satisfied.
+This is guidance and self-reporting, not independent verification or automatic
+skill detection. Plan approval still requires your explicit checkpoint; custom
+criteria cannot grant the agent permission to approve it or compact automatically.
+
 ## Task boundaries and compaction
 
 The boundary policy is opinionated, following the article's meaningful stopping
