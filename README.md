@@ -3,9 +3,9 @@
 A Pi extension for cost-aware context management, task-boundary compaction nudges,
 and smarter agent workflows.
 
-**Status: scaffold only.** `/context-coach` confirms the extension is loaded.
-Pricing audits, nudges, compaction actions, and polling coaching are planned, not
-implemented. Nothing is published to npm yet.
+**Status: in development.** Pricing configuration audits are implemented. Nudges,
+compaction actions, and polling coaching are coming in subsequent stacked PRs.
+Nothing is published to npm yet.
 
 ## Try the scaffold
 
@@ -18,7 +18,13 @@ From a checkout, load it for one invocation without changing your Pi settings:
 pi -e ./src/index.ts
 ```
 
-Then run `/context-coach`. To install the repository persistently:
+Then run `/context-coach audit` to inspect the active model's pricing metadata and
+effective compaction trigger. Risky configurations get a deduplicated startup or
+model-change warning. Suggested settings are a read-only preview: merge them
+manually, preserving your other settings, then `/reload`. Missing pricing tiers
+are reported as unknown, not as proof of no surcharge.
+
+To install the repository persistently:
 
 ```bash
 pi install git:github.com/MrDHat/pi-context-coach
